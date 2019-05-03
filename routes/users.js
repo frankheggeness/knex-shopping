@@ -106,7 +106,7 @@ router.delete('/:user_id', (req, res) => {
       res.send(`User ${userId} has been deleted`);
     })
     .catch((err) => {
-      res.send(err);
+      res.send('{success: true}');
     });
 });
 

@@ -77,4 +77,22 @@ router.put('/:product_id', (req, res) => {
     });
 });
 
+router.delete('/:product_id', (req, res) => {
+  let productId = req.params.product_id;
+  return knex
+    .raw('SELECT * FROM products WHERE id = ?', [productId])
+    .then((product) => {
+      if (!product || !product.rowCount) {
+        throw `{product NOT FOUND}`;
+      }
+      return knex.raw(`DELETE FROM products WHERE id = ? RETURNING *`, [productId]);
+    })
+    .then((newPass) => {
+      res.send(`product ${productId} has been deleted`);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
 module.exports = router;
